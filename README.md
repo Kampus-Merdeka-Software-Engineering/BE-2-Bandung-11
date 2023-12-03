@@ -77,43 +77,53 @@ npx prisma init
 npx prisma init --datasource-provider mysql
 ```
 
-notes: bacaan lanjutan bisa kalian baca disini
+12. isi `.env` bagian `DATABASE_URL`
+```bash
+DATABASE_URL="mysql://root:password@localhost:3306/sinkostan"
+```
 
-lalu akan kode tambahan pada file .env yaitu DATABASE_URL dimana nanti kalian harus isi sesuai dengan DATABASE_URL kalian, bisa diisi pake DATABASE_URL dari railway atau kalau jalanin di local, pake yang localhost dulu aja "mysql://root:password@localhost:3306/capstone_icanq". Dan ada satu file khusus yang ke generate dalam sebuah folder namanya prisma nama filenya schema.prisma dimana kalian harus mendefinisikan model kalian disitu sesuai dengan perencanaan yang kalian sudah rencanakan
+13. Dalam prisma nama filenya schema.prisma didefinisikan model sesuai dengan perencanaan
 
-kalau mau file schema.prisma berwarna atau dikasih highlight pada syntaxnya kalian bisa download extension ini
-
-kita bisa buat schema database dari yang udah kita rencanain dalam file schema.prisma dimana ada syntaxnya sendiri kalian bisa baca dokumentasinya di link [ini]
-
-ini ada contoh dari model dari schema yang dibikin
-
-model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  price     Int
-  imageUrl  String? // arti ?, not required, kalau pengen dibikin gapapa deh kalau datanya kosong
-  catalogId Int?
-  createdAt DateTime @default(now())
-  // untuk menambahkan relasi dari Product ke Catalog dimana Product boleh gapunya catalog
-  Catalog   Catalog? @relation(fields: [catalogId], references: [id])
+```bash
+model User{
+  id_user Int @id @default(autoincrement())
+  nama_lengkap String
+  jenis_kelamin String
+  tgl_lahir DateTime
+  pekerjaan String
+  no_telp String
+  email String
+  password String
 }
 
-model Catalog {
-  id       Int       @id @default(autoincrement())
-  name     String
-  // untuk nambahin relasi antara catalog dengan Product
-  products Product[] // ini artinya Catalog punya banyak product
+model booking{
+  id_booking Int @id @default(autoincrement())
+  id_user Int @unique
+  id_kamar Int @unique
+  status String
 }
 
-model Message {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String
-  message   String   @db.Text // biar bisa nyimpen pesan dengan karakter yang panjang
-  createdAt DateTime @default(now())
+model kamar{
+  id_kamar Int @id @default(autoincrement())
+  id_kos Int @unique
+  nama_kamar String
+  harga_kamar String
 }
 
-setelah kita define model di schema.prisma kita bisa melakukan synchronization database kita dengan schema yang udah dibuat tadi dengan command
+model kost{
+  id_kos Int @id @default(autoincrement())
+  nama_kos String
+  harga_range String
+  alamat_kos String
+}
+
+model kategori{
+  id_kategori Int @id @default(autoincrement())
+  kategori_kos String
+}
+```
+
+14. setelah kita define model di schema.prisma kita bisa melakukan synchronization database kita dengan schema yang udah dibuat tadi dengan command
 npx prisma migrate dev --name <nama_apa_yang_kalian_lakukan>
 <nama_apa_yang_kalian_lakukan> bisa diganti dengan aktifitas apa sih yang kamu lakaukan barusan, contoh:
 

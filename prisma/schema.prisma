@@ -9,3 +9,42 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+// buat dokumen model
+model User{
+  id_user Int @id @default(autoincrement())
+  nama_lengkap String
+  jenis_kelamin String
+  tgl_lahir DateTime
+  pekerjaan String
+  no_telp String
+  email String
+  password String
+}
+
+model booking{
+  id_booking Int @id @default(autoincrement())
+  id_user Int @unique
+  id_kamar Int @unique
+  status String
+}
+
+model kamar{
+  id_kamar Int @id @default(autoincrement())
+  id_kos Int @unique
+  nama_kamar String
+  harga_kamar String
+}
+
+model kost{
+  id_kos Int @id @default(autoincrement())
+  nama_kos String
+  harga_range String
+  alamat_kos String
+}
+
+model kategori{
+  id_kategori Int @id @default(autoincrement())
+  kategori_kos String
+}
+
