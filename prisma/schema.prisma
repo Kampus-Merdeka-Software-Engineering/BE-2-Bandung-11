@@ -31,18 +31,19 @@ model booking{
 
 model kamar{
   id_kamar Int @id @default(autoincrement())
-   nama_kamar String
+  nama_kamar String
   harga_kamar String
-  id_kost Int?
-  kost kost? @relation(fields: [id_kos], references: [id_kos])
+  id_kos Int?
+  kost kost? @relation(fields: [id_kos], references: [id])
  
 }
 
 model kost{
-  id_kos Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   nama_kos String
   harga_range String
   alamat_kos String
+  kamar kamar []
 }
 
 model kategori{
