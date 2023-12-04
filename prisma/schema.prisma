@@ -31,9 +31,11 @@ model booking{
 
 model kamar{
   id_kamar Int @id @default(autoincrement())
-  id_kos Int @unique
-  nama_kamar String
+   nama_kamar String
   harga_kamar String
+  id_kost Int?
+  kost kost? @relation(fields: [id_kos], references: [id_kos])
+ 
 }
 
 model kost{

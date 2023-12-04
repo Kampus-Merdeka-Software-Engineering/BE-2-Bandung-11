@@ -123,14 +123,18 @@ model kategori{
 }
 ```
 
-14. setelah kita define model di schema.prisma kita bisa melakukan synchronization database kita dengan schema yang udah dibuat tadi dengan command
-npx prisma migrate dev --name <nama_apa_yang_kalian_lakukan>
-<nama_apa_yang_kalian_lakukan> bisa diganti dengan aktifitas apa sih yang kamu lakaukan barusan, contoh:
+14. setelah kita define model di `schema.prisma` kita bisa melakukan synchronization database kita dengan schema yang udah dibuat tadi dengan command
+```bash
+npx prisma migrate dev --name <nama_apa_yang_dilakukan>
+```
 
-inisialisasi
-add_new_model_User
-add_relation_to_catalog_and_product
-npx prisma migrate dev wajib dilakukan setiap kali kalian sudah selesai mengubah schema.prisma atau adanya perubahan pada schema kalian, agar database selalu tersingkronisasi
+contoh:
+
+a. inisialisasi
+b. add_new_model_User
+c. add_relation_to_catalog_and_product
+
+`npx prisma migrate dev` wajib dilakukan setiap kali kalian sudah selesai mengubah schema.prisma atau adanya perubahan pada schema kalian, agar database selalu tersingkronisasi
 
 atau apabila kalian ingin lakukan singkronisasi dengan cara lain di prisma bisa dengan cara
 
