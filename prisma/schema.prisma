@@ -11,8 +11,8 @@ datasource db {
 }
 
 // buat dokumen model
-model User{
-  id_user Int @id @default(autoincrement())
+model user{
+  id Int @id @default(autoincrement())
   nama_lengkap String
   jenis_kelamin String
   tgl_lahir DateTime
@@ -20,21 +20,25 @@ model User{
   no_telp String
   email String
   password String
+  booking booking []
 }
 
 model booking{
-  id_booking Int @id @default(autoincrement())
-  id_user Int @unique
-  id_kamar Int @unique
+  id Int @id @default(autoincrement())
+  id_user Int?
+  user user? @relation(fields: [id_user], references: [id])
+  id_kamar Int?
+  kamar kamar? @relation(fields: [id_kamar], references: [id])
   status String
 }
 
 model kamar{
-  id_kamar Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   nama_kamar String
   harga_kamar String
   id_kos Int?
   kost kost? @relation(fields: [id_kos], references: [id])
+  booking booking []
  
 }
 
