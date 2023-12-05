@@ -50,12 +50,12 @@ app.get('/', async (req, res) => {
     res.status(200).send(kategori);
  });
 
- app.post("/kategoris", async (req, res) => {
-     if (!kategori_kos) res.status(400).json({ message: "Sudah terdaftar"});
+ app.post("/kategori", async (req, res) => {
     const {kategori_kos} = req.body;
+    if (!kategori_kos) res.status(400).json({ message: "Sudah terdaftar"});
     const newkategori = await prisma.kategori.create({
         data: {
-            kategori_kos : req.body.kategori_kos
+            kategori_kos : kategori_kos,
         },
     });
     res.status(201).json({
@@ -73,14 +73,12 @@ app.post("/user", async (req, res) => {
     const newUser = await prisma.user.create({
         data: {
             nama_lengkap: nama_lengkap,
-          
+            jenis_kelamin: jenis_kelamin,
             tgl_lahir: tgl_lahir,
             pekerjaan: pekerjaan,
             no_telp: no_telp,
             email: email,
             password: password
-
-            // password : password,
         },
     });
     res.status(201).json({
