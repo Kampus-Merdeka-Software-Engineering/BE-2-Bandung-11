@@ -53,14 +53,17 @@ app.get('/', async (req, res) => {
 //create data
 app.post("/user", async (req, res) => {
     const {nama_lengkap,jenis_kelamin,tgl_lahir,pekerjaan,no_telp,email,password} = req.body;
-    if (!nama_lengkap,!jenis_kelamin,!tgl_lahir,pekerjaan,no_telp,email,password) res.status(400).json({ message: "Sudah terdaftar"});
+    // if (!nama_lengkap,!jenis_kelamin,!tgl_lahir,pekerjaan,no_telp,email,password) res.status(400).json({ message: "Sudah terdaftar"});
     const newUser = await prisma.user.create({
         data: {
             // nama_lengkap: nama_lengkap,
-            email: email,
-            aa
-            a
-            aaa
+            Nama: nama_lengkap,
+            Jenis_Kelamin: jenis_kelamin,
+            Tanggal_Lahir: tgl_lahir,
+            Pekerjaan: pekerjaan,
+            No_Telepon: no_telp,
+            Email: email,
+            Password: password,
 
             // password : password,
         },
