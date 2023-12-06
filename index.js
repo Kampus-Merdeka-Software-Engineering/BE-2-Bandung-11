@@ -50,12 +50,13 @@ app.get('/', async (req, res) => {
     res.status(200).send(kategori);
  });
 
+// post kategori
  app.post("/kategori", async (req, res) => {
     const {kategori_kos} = req.body;
-    if (!kategori_kos) res.status(400).json({ message: "Sudah terdaftar"});
+    if (!kategori_kos) res.status(400).json({ message: "Name is required"});
     const newkategori = await prisma.kategori.create({
         data: {
-            kategori_kos : kategori_kos,
+            name : kategori_kos,
         },
     });
     res.status(201).json({
@@ -64,12 +65,26 @@ app.get('/', async (req, res) => {
     });
 });
 
+// update kategori
+app.put("/kategori/:id", async (req, res) => {
+    const {id} = req.params;
+	const {kategori_kos} = req.params;
+	
+    const updatekategorikos = await prisma.kategori.update({
+		where : { id: parseInt(id) },
+		data  : { name: kategori_kos},
+    });
+    res.status(201).json({
+        message:`Kategori dengan id: ${id} berhasil di update`,
+        data: updatekategorikos,
+    });
+});
 
 
 //create data
 app.post("/user", async (req, res) => {
     const {nama_lengkap,jenis_kelamin,tgl_lahir,pekerjaan,no_telp,email,password} = req.body;
-    // if (!nama_lengkap,!jenis_kelamin,!tgl_lahir,pekerjaan,no_telp,email,password) res.status(400).json({ message: "Sudah terdaftar"});
+	if (!nama_lengkap,!jenis_kelamin,!tgl_lahir,pekerjaan,no_telp,email,password) res.status(400).json({ message: "Sudah terdaftar"});
     const newUser = await prisma.user.create({
         data: {
             nama_lengkap: nama_lengkap,
