@@ -3,17 +3,17 @@ const kamarRoutes = express.Router();
 const {prisma} = require("../config/prisma");
 
 //Menginput data kamar
-kamarRoutesRoutes.post("/", async (req, res) => {
-    const newSign = await prisma.sign.create({
+kamarRoutes.post("/", async (req, res) => {
+    const newKamar = await prisma.kamar.create({
         data: {
-            nama_lengkap: req.body.nama_lengkap,
-            email: req.body.email,
-            password: req.body.password,
+            imgUrl: req.body.imgUrl,
+            nama_kamar: req.body.nama_kamar,
+            harga_kamar: req.body.harga_kamar,
         },
     });
     res.status(200).json({
-        message: "Akun telah terdaftar",
-        data: newSign,
+        message: "Data telah ditambahkan",
+        data: newKamar,
     });
 });
 

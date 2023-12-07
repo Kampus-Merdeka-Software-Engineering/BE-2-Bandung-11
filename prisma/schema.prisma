@@ -44,6 +44,7 @@ model booking{
 
 model kamar{
   id Int @id @default(autoincrement())
+  imgUrl String
   nama_kamar String
   harga_kamar String
   id_kos Int?
@@ -54,6 +55,7 @@ model kamar{
 
 model kost{
   id Int @id @default(autoincrement())
+  imgUrl String
   nama_kos String
   harga_range String
   alamat_kos String
