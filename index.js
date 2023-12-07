@@ -1,8 +1,11 @@
-require('dotenv').config();
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const {prisma} = require("./config/prisma");
+const {signRoutes} = require("./routes/sign.routes.js");
+const {kategoriRoutes} = require("./routes/kategori.routes.js");
+const {kamarRoutes} = require("./routes/kamar.routes.js");
 const app = express();
-const cors = require('cors');
-const {prisma} = require("./config/prisma")
 const PORT = process.env.PORT || 3000;
 
 app.use(cors())
@@ -13,22 +16,31 @@ app.get('/', async (req, res) => {
     res.send("ini adalah response");
 });
 
-//get data
- app.get("/kamar", async (req, res) =>{
-    const kamar = await prisma.kamar.findMany();
-    res.status(200).send(kamar);
- });
+//catalog routes
+app.use("/kategori", kategoriRoutes)
+app.use("/sign", signRoutes)
+app.use("/kamar", kamarRoutes)
 
- //mengambil kamar dengan id
- app.get("/kamar/:id", async (req, res) =>{
-    const kamar = await prisma.kamar.findUnique({
-        where:{
-            id: parseInt(req.params.id),
+//create data
+app.post("/user", async (req, res) => {
+    // const {nama_lengkap,jenis_kelamin,tgl_lahir,pekerjaan,no_telp,email,password} = req.body;
+	// if (!nama_lengkap,!jenis_kelamin,!tgl_lahir,!pekerjaan,!no_telp,!email,!password) res.status(400).json({ message: "Sudah terdaftar"});
+    const newUser = await prisma.user.create({
+        data: {
+            nama_lengkap: req.body.nama_lengkap,
+            jenis_kelamin: req.body.jenis_kelamin,
+            tgl_lahir: req.body.tgl_lahir,
+            pekerjaan: req.body.pekerjaan,
+            no_telp: req.body.no_telp,
+            email: req.body.email,
+            password: req.body.password,
         },
     });
-    if (!kamar) res.status(404).send("Kamar tidak ditemukan");
-    else res.status(200).send(kamar);
- });
+    res.status(201).json({
+        message: "Data sudah ditambahkan",
+        data: newUser,
+    });
+});
 
  app.get("/kost", async (req, res) =>{
     const kost = await prisma.kost.findMany();
@@ -44,63 +56,6 @@ app.get('/', async (req, res) => {
     const booking = await prisma.booking.findMany();
     res.status(200).send(booking);
  });
-
- app.get("/kategori", async (req, res) =>{
-    const kategori = await prisma.kategori.findMany();
-    res.status(200).send(kategori);
- });
-
-// post kategori
- app.post("/kategori", async (req, res) => {
-    const {kategori_kos} = req.body;
-    if (!kategori_kos) res.status(400).json({ message: "Name is required"});
-    const newkategori = await prisma.kategori.create({
-        data: {
-            name : kategori_kos,
-        },
-    });
-    res.status(201).json({
-        message: "Data sudah ditambahkan",
-        data: newkategori,
-    });
-});
-
-// update kategori
-app.put("/kategori/:id", async (req, res) => {
-    const {id} = req.params;
-	const {kategori_kos} = req.params;
-	
-    const updatekategorikos = await prisma.kategori.update({
-		where : { id: parseInt(id) },
-		data  : { name: kategori_kos},
-    });
-    res.status(201).json({
-        message:`Kategori dengan id: ${id} berhasil di update`,
-        data: updatekategorikos,
-    });
-});
-
-
-//create data
-app.post("/user", async (req, res) => {
-    const {nama_lengkap,jenis_kelamin,tgl_lahir,pekerjaan,no_telp,email,password} = req.body;
-	if (!nama_lengkap,!jenis_kelamin,!tgl_lahir,pekerjaan,no_telp,email,password) res.status(400).json({ message: "Sudah terdaftar"});
-    const newUser = await prisma.user.create({
-        data: {
-            nama_lengkap: nama_lengkap,
-            jenis_kelamin: jenis_kelamin,
-            tgl_lahir: tgl_lahir,
-            pekerjaan: pekerjaan,
-            no_telp: no_telp,
-            email: email,
-            password: password
-        },
-    });
-    res.status(201).json({
-        message: "Data sudah ditambahkan",
-        data: newUser,
-    });
-});
 
 app.all("*", async (req, res) => {
     res.json({

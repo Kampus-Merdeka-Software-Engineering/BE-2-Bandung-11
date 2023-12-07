@@ -11,16 +11,26 @@ datasource db {
 }
 
 // buat dokumen model
+model sign{
+  id Int @id @default(autoincrement())
+  nama_lengkap String
+  email String
+  password String
+  user user []
+}
+
 model user{
   id Int @id @default(autoincrement())
   nama_lengkap String
   jenis_kelamin String
-  tgl_lahir DateTime
+  tgl_lahir String
   pekerjaan String
   no_telp String
   email String
   password String
   booking booking []
+  id_sign Int?
+  user sign? @relation(fields: [id_sign], references: [id])
 }
 
 model booking{
@@ -51,7 +61,7 @@ model kost{
 }
 
 model kategori{
-  id_kategori Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   kategori_kos String
 }
 
