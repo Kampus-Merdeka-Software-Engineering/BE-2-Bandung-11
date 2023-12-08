@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "start:dev": "nodemon index.js",
-    "postinstall": "npx -y prisma db pull"
+    "start": "npx prisma generate && node app.js"
   },
   "keywords": [
     "express",
