@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,60 +7,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// buat dokumen model
-model sign{
-  id Int @id @default(autoincrement())
+model sign {
+  id           Int    @id @default(autoincrement())
   nama_lengkap String
-  email String
-  password String
-  user user []
+  email        String
+  password     String
+  user         user[]
 }
 
-model user{
-  id Int @id @default(autoincrement())
+model user {
+  id            Int       @id @default(autoincrement())
+  nama_lengkap  String
   jenis_kelamin String
-  tgl_lahir String
-  pekerjaan String
-  no_telp String
-  booking booking []
-  id_sign Int?
-  user sign? @relation(fields: [id_sign], references: [id])
+  tgl_lahir     String
+  pekerjaan     String
+  no_telp       String
+  email         String
+  password      String
+  id_sign       Int?
+  booking       booking[]
+  user          sign?     @relation(fields: [id_sign], references: [id])
+
+  @@index([id_sign], map: "user_id_sign_fkey")
 }
 
-model booking{
-  id Int @id @default(autoincrement())
-  id_user Int?
-  user user? @relation(fields: [id_user], references: [id])
+model booking {
+  id       Int    @id @default(autoincrement())
+  id_user  Int?
   id_kamar Int?
-  kamar kamar? @relation(fields: [id_kamar], references: [id])
-  status String
+  status   String
+  kamar    kamar? @relation(fields: [id_kamar], references: [id])
+  user     user?  @relation(fields: [id_user], references: [id])
+
+  @@index([id_kamar], map: "booking_id_kamar_fkey")
+  @@index([id_user], map: "booking_id_user_fkey")
 }
 
-model kamar{
-  id Int @id @default(autoincrement())
-  imgUrl String
-  nama_kamar String
+model kamar {
+  id          Int       @id @default(autoincrement())
+  imgUrl      String
+  nama_kamar  String
   harga_kamar String
-  id_kos Int?
-  kost kost? @relation(fields: [id_kos], references: [id])
-  booking booking []
- 
+  id_kos      Int?
+  booking     booking[]
+  kost        kost?     @relation(fields: [id_kos], references: [id])
+
+  @@index([id_kos], map: "kamar_id_kos_fkey")
 }
 
-model kost{
-  id Int @id @default(autoincrement())
-  imgUrl String
-  nama_kos String
+model kost {
+  id          Int     @id @default(autoincrement())
+  imgUrl      String
+  nama_kos    String
   harga_range String
-  alamat_kos String
-  kamar kamar []
-  id_kategori Int?
-  kategori kategori? @relation(fields: [id_kategori], references: [id])
+  alamat_kos  String
+  kamar       kamar[]
 }
 
-model kategori{
-  id Int @id @default(autoincrement())
+model kategori {
+  id           Int    @id @default(autoincrement())
   kategori_kos String
-  kost kost []
 }
-
