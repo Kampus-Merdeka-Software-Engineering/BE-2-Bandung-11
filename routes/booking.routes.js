@@ -4,18 +4,18 @@ const {prisma} = require("../config/prisma");
 
 //create data user
 bookingRoutes.post("/", async (req, res) => {
-    const newUser = await prisma.booking.create({
+    const newStatus = await prisma.booking.create({
         data: {status: req.body.status},
     });
     res.status(201).json({
         message: "Sudah Terverifikasi",
-        data: newUser,
+        data: newStatus,
     });
 });
 
 //Mengembil data user
 bookingRoutes.get("/", async (req, res) =>{
-    const user = await prisma.booking.findMany();
+    const booking = await prisma.booking.findMany();
     res.status(200).send(booking);
 });
 
@@ -37,7 +37,7 @@ bookingRoutes.put("/:id", async (req, res) => {
 //delete booking
 bookingRoutes.delete("/:id", async (req, res) => {
     const {id} = req.params;
-    await prisma.status.delete({
+    await prisma.booking.delete({
         where: 
         {id: parseInt(id),
         },
