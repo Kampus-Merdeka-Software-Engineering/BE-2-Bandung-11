@@ -21,13 +21,10 @@ model sign{
 
 model user{
   id Int @id @default(autoincrement())
-  nama_lengkap String
   jenis_kelamin String
   tgl_lahir String
   pekerjaan String
   no_telp String
-  email String
-  password String
   booking booking []
   id_sign Int?
   user sign? @relation(fields: [id_sign], references: [id])
@@ -60,10 +57,13 @@ model kost{
   harga_range String
   alamat_kos String
   kamar kamar []
+  id_kategori Int?
+  kategori kategori? @relation(fields: [id_kategori], references: [id])
 }
 
 model kategori{
   id Int @id @default(autoincrement())
   kategori_kos String
+  kost kost []
 }
 
