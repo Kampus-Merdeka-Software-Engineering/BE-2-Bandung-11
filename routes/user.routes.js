@@ -13,6 +13,7 @@ userRoutes.post("/", async (req, res) => {
       tgl_lahir: req.body.tgl_lahir,
       pekerjaan: req.body.pekerjaan,
       no_telp: req.body.no_telp,
+      id_sign: req.body.id_sign,
     },
   })
   res.status(201).json({
@@ -37,6 +38,7 @@ userRoutes.put("/:id", async (req, res) => {
   const { tgl_lahir } = req.body
   const { pekerjaan } = req.body
   const { no_telp } = req.body
+  const { id_sign } = req.body
 
   const updateUser = await prisma.user.update({
     where: { id: parseInt(id) },
@@ -48,6 +50,7 @@ userRoutes.put("/:id", async (req, res) => {
       tgl_lahir: tgl_lahir,
       pekerjaan: pekerjaan,
       no_telp: no_telp,
+      id_sign: id_sign,
     },
   })
   res.status(201).json({
