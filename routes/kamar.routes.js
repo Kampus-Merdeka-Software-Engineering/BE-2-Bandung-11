@@ -24,7 +24,6 @@ kamarRoutes.get("/", async (req, res) => {
 })
 
 //get data kamar by id_kos
-// http://localhost:3000/kamar/1
 kamarRoutes.get("/kost/:id_kos", async (req, res) => {
   const { id_kos } = req.params
   const kamar = await prisma.kamar.findMany({

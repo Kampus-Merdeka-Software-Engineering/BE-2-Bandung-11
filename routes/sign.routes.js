@@ -17,6 +17,23 @@ signRoutes.post("/", async (req, res) => {
   })
 })
 
+//Mengambil data sign
+signRoutes.get("/", async (req, res) => {
+    const sign = await prisma.sign.findMany()
+    res.status(200).json(sign)
+})
+
+//Mengembil data booking by Id
+signRoutes.get("/:id", async (req, res) =>{
+    const sign = await prisma.sign.findUnique({
+        where:{
+            id: parseInt(req.params.id),
+        },
+    });
+    if (!sign) res.status(404).send("User tidak ditemukan");
+    else res.status(200).send(sign);
+ });
+
 // // login
 // signRoutes.post("/login", async (req, res) => {
 //   const { email, password } = req.body

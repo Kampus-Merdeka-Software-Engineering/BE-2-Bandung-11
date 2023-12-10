@@ -2,7 +2,7 @@ const express = require('express');
 const bookingRoutes = express.Router();
 const {prisma} = require("../config/prisma");
 
-//create data user
+//create data booking
 bookingRoutes.post("/", async (req, res) => {
     const newStatus = await prisma.booking.create({
         data: {status: req.body.status},
@@ -13,11 +13,21 @@ bookingRoutes.post("/", async (req, res) => {
     });
 });
 
-//Mengembil data user
+//Mengembil data booking
 bookingRoutes.get("/", async (req, res) =>{
     const booking = await prisma.booking.findMany();
     res.status(200).send(booking);
 });
+//Mengembil data booking by Id
+bookingRoutes.get("/:id", async (req, res) =>{
+    const booking = await prisma.booking.findUnique({
+        where:{
+            id: parseInt(req.params.id),
+        },
+    });
+    if (!booking) res.status(404).send("Kos tidak ditemukan");
+    else res.status(200).send(booking);
+ });
 
 // update booking
 bookingRoutes.put("/:id", async (req, res) => {
