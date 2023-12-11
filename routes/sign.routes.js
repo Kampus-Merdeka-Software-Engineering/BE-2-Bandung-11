@@ -1,7 +1,7 @@
 const express = require("express")
 const signRoutes = express.Router()
 const bcrypt = require("bcrypt")
-const { PrismaClient } = require("@prisma/client")
+
 const { prisma } = require("../config/prisma")
 
 //Menginput data Sign
