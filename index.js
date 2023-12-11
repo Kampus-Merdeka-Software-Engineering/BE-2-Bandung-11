@@ -3,7 +3,6 @@ const express = require("express")
 const cors = require("cors")
 const { signRoutes } = require("./routes/sign.routes.js")
 const { userRoutes } = require("./routes/user.routes.js")
-const { kategoriRoutes } = require("./routes/kategori.routes.js")
 const { kamarRoutes } = require("./routes/kamar.routes.js")
 const { kostRoutes } = require("./routes/kost.routes.js")
 const { bookingRoutes } = require("./routes/booking.routes.js")
@@ -38,8 +37,6 @@ const prisma = new PrismaClient({
 })
 
 //catalog routes
-
-app.use("/kategori", kategoriRoutes)
 app.use("/sign", signRoutes)
 app.use("/user", userRoutes)
 app.use("/kamar", kamarRoutes)

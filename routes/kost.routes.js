@@ -36,14 +36,14 @@ kostRoutes.get("/:id", async (req, res) => {
 })
 
 //mengambil kost berdasarkan id_kategori
-kostRoutes.get("/kategori/:id_kategori", async (req, res) => {
-  const { id_kategori } = req.params
-  const kost = await prisma.kost.findMany({
-    where: {
-      id_kategori: parseInt(id_kategori),
-    },
-  })
-  res.status(200).send(kost)
-})
+// kostRoutes.get("/kategori/:id_kategori", async (req, res) => {
+//   const { id_kategori } = req.params
+//   const kost = await prisma.kost.findMany({
+//     where: {
+//       id_kategori: parseInt(id_kategori),
+//     },
+//   })
+//   res.status(200).send(kost)
+// })
 
 module.exports = { kostRoutes }

@@ -29,15 +29,15 @@ userRoutes.get("/", async (req, res) => {
 })
 
 //Mengembil data user by Id
-userRoutes.get("/:id", async (req, res) =>{
-    const user = await prisma.user.findUnique({
-        where:{
-            id: parseInt(req.params.id),
-        },
-    });
-    if (!user) res.status(404).send("User tidak ditemukan");
-    else res.status(200).send(user);
- });
+userRoutes.get("/:id", async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+  })
+  if (!user) res.status(404).send("User tidak ditemukan")
+  else res.status(200).send(user)
+})
 
 // update user
 userRoutes.put("/:id", async (req, res) => {

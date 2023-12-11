@@ -65,7 +65,3 @@ model kost {
   kamar       kamar[]
 }
 
-model kategori {
-  id           Int    @id @default(autoincrement())
-  kategori_kos String 
-}
