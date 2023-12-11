@@ -63,14 +63,9 @@ model kost {
   harga_range String
   alamat_kos  String
   kamar       kamar[]
-  // id_kategori Int?
-  // kategori    kategori?  @relation(fields: [id_kategori], references: [id])
-
-  // @@index([id_kategori], map: "kost_id_kaegori_fkey")
 }
 
 model kategori {
   id           Int    @id @default(autoincrement())
-  kategori_kos String
-  // kost         kost[] 
+  kategori_kos String 
 }

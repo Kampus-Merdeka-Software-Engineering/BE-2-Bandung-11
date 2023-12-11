@@ -1,20 +1,29 @@
 const express = require("express")
 const signRoutes = express.Router()
+const bcrypt = require("bcrypt")
+const { PrismaClient } = require("@prisma/client")
 const { prisma } = require("../config/prisma")
 
 //Menginput data Sign
 signRoutes.post("/", async (req, res) => {
-  const newSign = await prisma.sign.create({
-    data: {
-      nama_lengkap: req.body.nama_lengkap,
-      email: req.body.email,
-      password: req.body.password,
-    },
-  })
-  res.status(200).json({
-    message: "Akun telah terdaftar",
-    data: newSign,
-  })
+  const { nama_lengkap, email, password } = req.body
+  try {
+    const hashedPassword = await bcrypt.hash(password, 13)
+
+    const createSign = await prisma.sign.create({
+      data: {
+        nama_lengkap: nama_lengkap,
+        email: email,
+        password: hashedPassword,
+      },
+    })
+    res.status(200).json({
+      message: "Data telah disimpan",
+      data: createSign,
+    })
+  } catch (error) {
+    res.status(500).json({ message: "Terjadi kesalahan saat menyimpan data." })
+  }
 })
 
 //Mengambil data sign
@@ -25,7 +34,7 @@ signRoutes.get("/", async (req, res) => {
 
 //Mengembil data booking by Id
 signRoutes.get("/:id", async (req, res) => {
-  const sign = await prisma.sign.findUnique({
+  const sign = await prisma.sign.findMany({
     where: {
       id: parseInt(req.params.id),
     },
@@ -34,26 +43,41 @@ signRoutes.get("/:id", async (req, res) => {
   else res.status(200).send(sign)
 })
 
-// // login
-// signRoutes.post("/login", async (req, res) => {
-//   const { email, password } = req.body
+// Route log in
+signRoutes.post("/login", async (req, res) => {
+  const { email, password } = req.body
+  if (!email || !password) {
+    return res.status(400).json({ error: "Missing email or password" })
+  }
 
-//   // Cari sign dengan email tersebut
-//   const signUser = await prisma.sign.findMany({
-//     where: {
-//       email: email,
-//     },
-//   })
+  try {
+    const sign = await prisma.sign.findMany({
+      where: {
+        email: email,
+      },
+    })
 
-//   // Bandingkan password yang masuk dari req.body dengan password yang ada di database
-//   if (signUser && signUser.password === password) {
-//     // Kalau misal passwordnya sama -> yang login bener (accepted)
-//     res.status(200).send("Login berhasil!")
-//   } else {
-//     // Kalau misal login salah password
-//     res.status(401).send("Email atau password salah!")
-//   }
-// })
+    if (!sign.length) {
+      return res.status(401).json({ error: "Invalid email or password" })
+    }
+
+    const match = await bcrypt.compare(password, sign[0].password)
+
+    if (match) {
+      req.session.loggedIn = true
+      return res.status(200).json({
+        status: "success",
+        message: "Login successful!",
+        user: { email: sign[0].email, password: sign[0].password },
+      })
+    } else {
+      return res.status(401).json({ error: "Invalid email or password" })
+    }
+  } catch (error) {
+    console.error("Error during login", error)
+    res.status(500).json({ error: "Error during login" })
+  }
+})
 
 // update Sign
 signRoutes.put("/:id", async (req, res) => {
