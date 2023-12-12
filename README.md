@@ -117,10 +117,6 @@ model kost{
   alamat_kos String
 }
 
-model kategori{
-  id_kategori Int @id @default(autoincrement())
-  kategori_kos String
-}
 ```
 
 14. setelah kita define model di `schema.prisma` kita bisa melakukan synchronization database kita dengan schema yang udah dibuat tadi dengan command
